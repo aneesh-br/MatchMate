@@ -74,4 +74,16 @@ class MainViewModel(
             repository.fetchUsersFromApiAndCache() // refill
         }
     }
+
+    fun fetchNextPage() {
+        viewModelScope.launch {
+            try {
+                if (NetworkUtils.isNetworkAvailable(context)) {
+                    repository.fetchUsersFromApiAndCache()
+                }
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Pagination failed: ${e.localizedMessage}")
+            }
+        }
+    }
 }

@@ -1,13 +1,10 @@
 package com.example.matchmate.repository
 
-import android.util.Log
 import com.example.matchmate.data.MatchProfileEntity
-import com.example.matchmate.data.PendingActionEntity
 import com.example.matchmate.model.MatchProfile
 import com.example.matchmate.model.MatchStatus
 import com.example.matchmate.model.UserResponse
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import retrofit2.Response
 
 interface UserRepository {

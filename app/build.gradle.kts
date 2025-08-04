@@ -86,9 +86,12 @@ dependencies {
     implementation(libs.cardview)
 
     implementation(libs.coil)
-    implementation(libs.coil.compose)}
+    implementation(libs.coil.compose)
 
-java {
+    implementation("androidx.compose.material:material:1.6.0")
+}
+
+    java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
