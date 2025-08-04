@@ -52,7 +52,26 @@ class MainViewModel(
 
     fun updateMatchStatus(userId: String, status: MatchStatus) {
         viewModelScope.launch {
-            repository.updateUserStatus(userId, status)
+            if (NetworkUtils.isNetworkAvailable(context)) {
+                repository.updateUserStatus(userId, status)
+            } else {
+                repository.queueUserStatus(userId, status)
+            }
+        }
+    }
+
+    fun updatePendingIfOnline() {
+        viewModelScope.launch {
+            if (NetworkUtils.isNetworkAvailable(context)) {
+                repository.flushPendingActions()
+            }
+        }
+    }
+
+    fun refreshFromNetwork() {
+        viewModelScope.launch {
+            repository.clearUsersFromDb() // wipe local
+            repository.fetchUsersFromApiAndCache() // refill
         }
     }
 }

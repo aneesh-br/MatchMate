@@ -18,4 +18,14 @@ interface MatchProfileDao {
     suspend fun clearAll()
 
     @Query("SELECT * FROM match_profiles WHERE uuid = :id")
-    suspend fun getProfileById(id: String): MatchProfileEntity?}
+    suspend fun getProfileById(id: String): MatchProfileEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPendingAction(action: PendingActionEntity)
+
+    @Query("SELECT * FROM pending_actions")
+    suspend fun getAllPendingActions(): List<PendingActionEntity>
+
+    @Query("DELETE FROM pending_actions")
+    suspend fun clearPendingActions()
+}

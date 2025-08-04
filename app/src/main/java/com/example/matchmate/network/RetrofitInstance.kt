@@ -4,7 +4,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    //generates random user profiles.
     private const val BASE_URL = "https://randomuser.me/"
 
     val api: MatchApiService by lazy {

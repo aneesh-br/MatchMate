@@ -15,8 +15,9 @@ object MatchDatabase {
                 AppDatabase::class.java,
                 "matchmate_database"
             )
-                .fallbackToDestructiveMigration() // optionally handle migrations for now
+                .fallbackToDestructiveMigration()
                 .build()
+
             INSTANCE = instance
             instance
         }

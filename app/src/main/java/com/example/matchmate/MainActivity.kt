@@ -1,5 +1,8 @@
 package com.example.matchmate
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,6 +36,14 @@ class MainActivity : ComponentActivity() {
         val factory = MainViewModelFactory(repository, applicationContext)
 
         viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+
+        //Network callback to update Accept and Decline actions if online
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        cm.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                viewModel.updatePendingIfOnline()
+            }
+        })
 
         setContent {
             MatchMateTheme {

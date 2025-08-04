@@ -5,6 +5,7 @@ import com.example.matchmate.model.UserResponse
 import com.example.matchmate.network.MatchApiService
 import com.example.matchmate.data.MatchProfileDao
 import com.example.matchmate.data.MatchProfileEntity
+import com.example.matchmate.data.PendingActionEntity
 import com.example.matchmate.model.Dob
 import com.example.matchmate.model.Location
 import com.example.matchmate.model.Login
@@ -71,6 +72,24 @@ class UserRepositoryImpl(
         matchProfileDao.clearAll()
     }
 
+    override suspend fun queueUserStatus(userId: String, status: MatchStatus) {
+        matchProfileDao.insertPendingAction(
+            PendingActionEntity(userId = userId, status = status)
+        )
+    }
+
+    override suspend fun flushPendingActions() {
+        val pending = matchProfileDao.getAllPendingActions()
+        for (action in pending) {
+            val user = matchProfileDao.getProfileById(action.userId)
+            if (user != null) {
+                val updated = user.copy(status = action.status)
+                matchProfileDao.updateProfile(updated)
+            }
+        }
+        matchProfileDao.clearPendingActions()
+    }
+
     fun MatchProfileEntity.toMatchProfile(): MatchProfile {
         return MatchProfile(
             user = User( // You may need to store more info in entity if you want richer domain objects
@@ -87,16 +106,4 @@ class UserRepositoryImpl(
         )
     }
 
-    fun MatchProfile.toEntity(): MatchProfileEntity {
-        return MatchProfileEntity(
-            uuid = user.login.uuid,
-            name = user.fullName,
-            age = user.age,
-            city = user.location.city,
-            state = user.location.state,
-            country = user.location.country,
-            imageUrl = user.picture.large,
-            status = status
-        )
-    }
 }
