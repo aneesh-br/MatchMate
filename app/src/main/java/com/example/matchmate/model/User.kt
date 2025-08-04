@@ -18,6 +18,9 @@ data class User(
 
     val photoUrl: String
         get() = picture.large
+
+    val locationString: String
+        get() = "${location.city}, ${location.state}, ${location.country}"
 }
 
 data class Login(
