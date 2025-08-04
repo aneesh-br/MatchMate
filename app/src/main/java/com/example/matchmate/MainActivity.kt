@@ -9,17 +9,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import com.example.matchmate.data.AppDatabase
+import com.example.matchmate.data.MatchDatabase
+import com.example.matchmate.network.RetrofitInstance
+import com.example.matchmate.repository.UserRepositoryImpl
 import com.example.matchmate.ui.screens.MatchListScreen
 import com.example.matchmate.ui.theme.MatchMateTheme
 import com.example.matchmate.viewmodel.MainViewModel
+import com.example.matchmate.viewmodel.MainViewModelFactory
 
 class MainActivity : ComponentActivity() {
-    private val viewModel: MainViewModel by viewModels()
+
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        viewModel.fetchUsers()
+
+        val database = MatchDatabase.getDatabase(this)
+        val dao = database.matchProfileDao()
+        val apiService = RetrofitInstance.api
+        val repository = UserRepositoryImpl(apiService, dao)
+        val factory = MainViewModelFactory(repository)
+
+        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+
         setContent {
             MatchMateTheme {
                 MatchListScreen(viewModel)
