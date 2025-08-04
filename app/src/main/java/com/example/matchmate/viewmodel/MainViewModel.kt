@@ -1,18 +1,22 @@
 package com.example.matchmate.viewmodel
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.matchmate.model.MatchProfile
 import com.example.matchmate.model.MatchStatus
 import com.example.matchmate.repository.UserRepository
+import com.example.matchmate.util.NetworkUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val repository: UserRepository
+    private val repository: UserRepository,
+    private val context: Context
 ) : ViewModel() {
 
     private val _users = MutableStateFlow<List<MatchProfile>>(emptyList())
@@ -34,7 +38,12 @@ class MainViewModel(
     private fun fetchAndCacheUsers() {
         viewModelScope.launch {
             try {
-                repository.fetchUsersFromApiAndCache()
+                if (NetworkUtils.isNetworkAvailable(context)) {
+                    repository.fetchUsersFromApiAndCache()
+                } else {
+                    Toast.makeText(context, "You're offline. Showing cached matches.", Toast.LENGTH_SHORT).show()
+                    Log.d("MainViewModel", "Offline mode: loading from DB only")
+                }
             } catch (e: Exception) {
                 Log.e("MainViewModel", "Failed to fetch users: ${e.localizedMessage}")
             }

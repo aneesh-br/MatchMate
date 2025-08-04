@@ -26,11 +26,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val database = MatchDatabase.getDatabase(this)
+        val database = MatchDatabase.getDatabase(applicationContext)
         val dao = database.matchProfileDao()
         val apiService = RetrofitInstance.api
         val repository = UserRepositoryImpl(apiService, dao)
-        val factory = MainViewModelFactory(repository)
+        val factory = MainViewModelFactory(repository, applicationContext)
 
         viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
