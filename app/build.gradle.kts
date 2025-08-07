@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
 }
 
@@ -89,10 +90,17 @@ dependencies {
     implementation(libs.coil.compose)
 
     implementation("androidx.compose.material:material:1.6.0")
+
+    implementation("com.google.dagger:hilt-android:2.51")
+    kapt("com.google.dagger:hilt-android-compiler:2.51")
 }
 
-    java {
+java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
+}
+
+kapt {
+    correctErrorTypes = true
 }

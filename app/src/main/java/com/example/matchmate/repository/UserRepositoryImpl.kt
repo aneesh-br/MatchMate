@@ -17,8 +17,9 @@ import com.example.matchmate.model.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import retrofit2.Response
+import javax.inject.Inject
 
-class UserRepositoryImpl(
+class UserRepositoryImpl @Inject constructor(
     private val apiService: MatchApiService,
     private val matchProfileDao: MatchProfileDao
 ) : UserRepository {

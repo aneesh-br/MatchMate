@@ -18,7 +18,9 @@ import com.example.matchmate.ui.screens.MatchListScreen
 import com.example.matchmate.ui.theme.MatchMateTheme
 import com.example.matchmate.viewmodel.MainViewModel
 import com.example.matchmate.viewmodel.MainViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var viewModel: MainViewModel

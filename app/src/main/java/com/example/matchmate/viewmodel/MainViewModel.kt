@@ -9,14 +9,18 @@ import com.example.matchmate.model.MatchProfile
 import com.example.matchmate.model.MatchStatus
 import com.example.matchmate.repository.UserRepository
 import com.example.matchmate.util.NetworkUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val repository: UserRepository,
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _users = MutableStateFlow<List<MatchProfile>>(emptyList())

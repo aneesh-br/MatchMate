@@ -4,10 +4,12 @@ import android.app.Application
 import android.app.Activity
 import android.os.Bundle
 import com.example.matchmate.data.MatchDatabase
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@HiltAndroidApp
 class MatchMateApp : Application() {
 
     private var activityCount = 0
